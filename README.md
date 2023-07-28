@@ -1,9 +1,14 @@
-# Fabric Example Mod
+# Nametag Tweaks
 
-## Setup
+A small QOL mod that lets you change the look of nametags.
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+## Download
 
-## License
+Downloads can be found on the [Modrinth page](https://modrinth.com/mod/nametagtweaks).
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+### Features
+
+- Show Own Nametag
+- Show Nametags in F1 Mode
+- Custom Nametag Background Opacity
+- Nametag Text Shadow (slightly broken)
