@@ -19,7 +19,11 @@ public class LivingEntityRendererMixin {
     @Inject(method = "hasLabel(Lnet/minecraft/entity/LivingEntity;)Z", at = @At(value = "TAIL", shift = At.Shift.BEFORE), cancellable = true)
     public void showInThirdPerson(LivingEntity livingEntity, CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(
-                (MinecraftClient.isHudEnabled() || NametagTweaksConfig.INSTANCE.getConfig().showNametagsInHiddenHud) && (NametagTweaksConfig.INSTANCE.getConfig().showOwnNametags || livingEntity != MinecraftClient.getInstance().getCameraEntity()) && !livingEntity.isInvisibleTo(MinecraftClient.getInstance().player) && !livingEntity.hasPassengers()
+                (MinecraftClient.isHudEnabled() || NametagTweaksConfig.INSTANCE.getConfig().showNametagsInHiddenHud)
+                        && (NametagTweaksConfig.INSTANCE.getConfig().showOwnNametags
+                        || livingEntity != MinecraftClient.getInstance().getCameraEntity())
+                        && !livingEntity.isInvisibleTo(MinecraftClient.getInstance().player)
+                        && !livingEntity.hasPassengers()
         );
     }
 }

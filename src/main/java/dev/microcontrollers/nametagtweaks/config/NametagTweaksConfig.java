@@ -18,23 +18,23 @@ public class NametagTweaksConfig {
             .setPath(FabricLoader.getInstance().getConfigDir().resolve("nametagtweaks.json"))
             .build();
 
-    @ConfigEntry
-    public boolean showOwnNametags = false;
-
-    @ConfigEntry
-    public boolean showNametagsInHiddenHud = false;
-
-    @ConfigEntry
-    public boolean nametagTextShadow = false;
-
-    @ConfigEntry
-    public float nametagOpacity = 25F;
+    @ConfigEntry public boolean removeNametags = false;
+    @ConfigEntry public boolean showOwnNametags = false;
+    @ConfigEntry public boolean showNametagsInHiddenHud = false;
+    @ConfigEntry public boolean nametagTextShadow = false;
+    @ConfigEntry public float nametagOpacity = 25F;
 
     public static Screen configScreen(Screen parent) {
         return YetAnotherConfigLib.create(INSTANCE, ((defaults, config, builder) -> builder
                 .title(Text.literal("Nametag Tweaks"))
                 .category(ConfigCategory.createBuilder()
                         .name(Text.literal("Nametag Tweaks"))
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Remove Nametags"))
+                                .description(OptionDescription.of(Text.of("Removes all nametags.")))
+                                .binding(defaults.removeNametags, () -> config.removeNametags, newVal -> config.removeNametags = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
                         .option(Option.createBuilder(boolean.class)
                                 .name(Text.literal("Show Own Nametag"))
                                 .description(OptionDescription.of(Text.of("Show your own nametag when in third person perspective.")))
