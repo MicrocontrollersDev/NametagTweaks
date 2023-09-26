@@ -21,6 +21,8 @@ public class NametagTweaksConfig {
     @ConfigEntry public boolean removeNametags = false;
     @ConfigEntry public boolean showOwnNametags = false;
     @ConfigEntry public boolean showNametagsInHiddenHud = false;
+    @ConfigEntry public boolean hideNametagsInHiddenHud = false;
+    @ConfigEntry public boolean hideArmorStandNametagsInHiddenHud = false;
     @ConfigEntry public boolean nametagTextShadow = false;
     @ConfigEntry public float nametagOpacity = 25F;
 
@@ -42,9 +44,21 @@ public class NametagTweaksConfig {
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .option(Option.createBuilder(boolean.class)
-                                .name(Text.literal("Show Nametags in F1 Mode"))
-                                .description(OptionDescription.of(Text.of("Show nametags in F1 mode when the HUD is hidden.")))
+                                .name(Text.literal("Show Entity Nametags in F1 Mode"))
+                                .description(OptionDescription.of(Text.of("Show non-player and non-armor stand nametags in F1 mode when the HUD is hidden.")))
                                 .binding(defaults.showNametagsInHiddenHud, () -> config.showNametagsInHiddenHud, newVal -> config.showNametagsInHiddenHud = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Hide Player Nametags in F1 Mode"))
+                                .description(OptionDescription.of(Text.of("Hide player nametags in F1 mode when the HUD is hidden.")))
+                                .binding(defaults.hideNametagsInHiddenHud, () -> config.hideNametagsInHiddenHud, newVal -> config.hideNametagsInHiddenHud = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Hide Armor Stand Nametags in F1 Mode"))
+                                .description(OptionDescription.of(Text.of("Hide armor stand nametags in F1 mode when the HUD is hidden.")))
+                                .binding(defaults.hideArmorStandNametagsInHiddenHud, () -> config.hideArmorStandNametagsInHiddenHud, newVal -> config.hideArmorStandNametagsInHiddenHud = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .option(Option.createBuilder(float.class)

@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /*
   This is taken from Easeify under LGPLV3
   https://github.com/Polyfrost/Easeify/blob/main/LICENSE
+  It has been modified to fix issues
  */
 @Mixin(LivingEntityRenderer.class)
 public class LivingEntityRendererMixin {
@@ -19,7 +20,7 @@ public class LivingEntityRendererMixin {
     @Inject(method = "hasLabel(Lnet/minecraft/entity/LivingEntity;)Z", at = @At(value = "TAIL", shift = At.Shift.BEFORE), cancellable = true)
     public void showInThirdPerson(LivingEntity livingEntity, CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(
-                (MinecraftClient.isHudEnabled() || NametagTweaksConfig.INSTANCE.getConfig().showNametagsInHiddenHud)
+                (MinecraftClient.isHudEnabled() || !NametagTweaksConfig.INSTANCE.getConfig().hideNametagsInHiddenHud)
                         && (NametagTweaksConfig.INSTANCE.getConfig().showOwnNametags
                         || livingEntity != MinecraftClient.getInstance().getCameraEntity())
                         && !livingEntity.isInvisibleTo(MinecraftClient.getInstance().player)
