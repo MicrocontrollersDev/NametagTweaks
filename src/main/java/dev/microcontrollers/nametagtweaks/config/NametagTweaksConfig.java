@@ -4,14 +4,16 @@ import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
-import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import dev.isxander.yacl3.config.ConfigEntry;
 import dev.isxander.yacl3.config.ConfigInstance;
 import dev.isxander.yacl3.config.GsonConfigInstance;
+import dev.isxander.yacl3.gui.controllers.ColorController;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
+
+import java.awt.*;
 
 public class NametagTweaksConfig {
     public static final ConfigInstance<NametagTweaksConfig> INSTANCE = GsonConfigInstance.createBuilder(NametagTweaksConfig.class)
@@ -20,11 +22,11 @@ public class NametagTweaksConfig {
 
     @ConfigEntry public boolean removeNametags = false;
     @ConfigEntry public boolean showOwnNametags = false;
-    @ConfigEntry public boolean showNametagsInHiddenHud = false;
-    @ConfigEntry public boolean hideNametagsInHiddenHud = false;
+    @ConfigEntry public boolean hideEntityNametagsInHiddenHud = true;
+    @ConfigEntry public boolean hidePlayerNametagsInHiddenHud = false;
     @ConfigEntry public boolean hideArmorStandNametagsInHiddenHud = false;
     @ConfigEntry public boolean nametagTextShadow = false;
-    @ConfigEntry public float nametagOpacity = 25F;
+    @ConfigEntry public Color nametagColor = new Color(0, 0, 0, 63);
 
     public static Screen configScreen(Screen parent) {
         return YetAnotherConfigLib.create(INSTANCE, ((defaults, config, builder) -> builder
@@ -44,15 +46,15 @@ public class NametagTweaksConfig {
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .option(Option.createBuilder(boolean.class)
-                                .name(Text.literal("Show Entity Nametags in F1 Mode"))
-                                .description(OptionDescription.of(Text.of("Show non-player and non-armor stand nametags in F1 mode when the HUD is hidden.")))
-                                .binding(defaults.showNametagsInHiddenHud, () -> config.showNametagsInHiddenHud, newVal -> config.showNametagsInHiddenHud = newVal)
+                                .name(Text.literal("Hide Entity Nametags in F1 Mode"))
+                                .description(OptionDescription.of(Text.of("Hide non-player and non-armor stand nametags in F1 mode when the HUD is hidden.")))
+                                .binding(defaults.hideEntityNametagsInHiddenHud, () -> config.hideEntityNametagsInHiddenHud, newVal -> config.hideEntityNametagsInHiddenHud = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .option(Option.createBuilder(boolean.class)
                                 .name(Text.literal("Hide Player Nametags in F1 Mode"))
                                 .description(OptionDescription.of(Text.of("Hide player nametags in F1 mode when the HUD is hidden.")))
-                                .binding(defaults.hideNametagsInHiddenHud, () -> config.hideNametagsInHiddenHud, newVal -> config.hideNametagsInHiddenHud = newVal)
+                                .binding(defaults.hidePlayerNametagsInHiddenHud, () -> config.hidePlayerNametagsInHiddenHud, newVal -> config.hidePlayerNametagsInHiddenHud = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .option(Option.createBuilder(boolean.class)
@@ -61,14 +63,10 @@ public class NametagTweaksConfig {
                                 .binding(defaults.hideArmorStandNametagsInHiddenHud, () -> config.hideArmorStandNametagsInHiddenHud, newVal -> config.hideArmorStandNametagsInHiddenHud = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
-                        .option(Option.createBuilder(float.class)
-                                .name(Text.literal("Custom Nametag Background Opacity"))
-                                .description(OptionDescription.of(Text.of("The value for custom nametag background opacity. The default vanilla value is 25%.")))
-                                .binding(25F, () -> config.nametagOpacity, newVal -> config.nametagOpacity = newVal)
-                                .controller(opt -> FloatSliderControllerBuilder.create(opt)
-                                        .valueFormatter(value -> Text.of(String.format("%,.0f", value) + "%"))
-                                        .range(0F, 100F)
-                                        .step(1F))
+                        .option(Option.<Color>createBuilder()
+                                .name(Text.literal("Color Option"))
+                                .binding(defaults.nametagColor, () -> config.nametagColor, value -> config.nametagColor = value)
+                                .customController(opt -> new ColorController(opt, true))
                                 .build())
                         .option(Option.createBuilder(boolean.class)
                                 .name(Text.literal("Nametag Text Shadow"))
