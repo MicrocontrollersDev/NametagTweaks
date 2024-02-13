@@ -13,5 +13,7 @@ Downloads can be found on the [Modrinth page](https://modrinth.com/mod/nametagtw
 - Hide Entity Nametags in F1 Mode
 - Hide Player Nametags in F1 Mode
 - Hide Armor Stand Nametags in F1 Mode
+- Nametag Height Offset
 - Custom Nametag Background Color
 - Nametag Text Shadow (slightly broken)
+- Nametag Scale

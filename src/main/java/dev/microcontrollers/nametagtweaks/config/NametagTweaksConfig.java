@@ -76,6 +76,7 @@ public class NametagTweaksConfig {
                                 .build())
                         .option(Option.<Color>createBuilder()
                                 .name(Text.literal("Nametag Background Color"))
+                                .description(OptionDescription.of(Text.of("Allows setting a custom color for the background of nametags.")))
                                 .binding(defaults.nametagColor, () -> config.nametagColor, value -> config.nametagColor = value)
                                 .customController(opt -> new ColorController(opt, true))
                                 .build())
