@@ -4,6 +4,8 @@ import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
+import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder;
+import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import dev.isxander.yacl3.config.ConfigEntry;
 import dev.isxander.yacl3.config.ConfigInstance;
@@ -25,9 +27,10 @@ public class NametagTweaksConfig {
     @ConfigEntry public boolean hideEntityNametagsInHiddenHud = true;
     @ConfigEntry public boolean hidePlayerNametagsInHiddenHud = false;
     @ConfigEntry public boolean hideArmorStandNametagsInHiddenHud = false;
-    @ConfigEntry public boolean nametagTextShadow = false;
+    @ConfigEntry public int nametagOffset = 0;
     @ConfigEntry public Color nametagColor = new Color(0, 0, 0, 63);
-
+    @ConfigEntry public boolean nametagTextShadow = false;
+    @ConfigEntry public float nametagScale = 1F;
     public static Screen configScreen(Screen parent) {
         return YetAnotherConfigLib.create(INSTANCE, ((defaults, config, builder) -> builder
                 .title(Text.literal("Nametag Tweaks"))
@@ -63,8 +66,16 @@ public class NametagTweaksConfig {
                                 .binding(defaults.hideArmorStandNametagsInHiddenHud, () -> config.hideArmorStandNametagsInHiddenHud, newVal -> config.hideArmorStandNametagsInHiddenHud = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
+                        .option(Option.createBuilder(int.class)
+                                .name(Text.literal("Nametag Height Offset"))
+                                .description(OptionDescription.of(Text.of("Change the height offset of nametags.")))
+                                .binding(0, () -> config.nametagOffset, newVal -> config.nametagOffset = newVal)
+                                .controller(opt -> IntegerSliderControllerBuilder.create(opt)
+                                        .range(-10, 10)
+                                        .step(1))
+                                .build())
                         .option(Option.<Color>createBuilder()
-                                .name(Text.literal("Color Option"))
+                                .name(Text.literal("Nametag Background Color"))
                                 .binding(defaults.nametagColor, () -> config.nametagColor, value -> config.nametagColor = value)
                                 .customController(opt -> new ColorController(opt, true))
                                 .build())
@@ -74,6 +85,15 @@ public class NametagTweaksConfig {
                                 .binding(defaults.nametagTextShadow, () -> config.nametagTextShadow, newVal -> config.nametagTextShadow = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
+                        .option(Option.createBuilder(float.class)
+                                .name(Text.literal("Nametag Scale"))
+                                .description(OptionDescription.of(Text.of("Allow scaling for Minecraft nametags.")))
+                                .binding(1F, () -> config.nametagScale, newVal -> config.nametagScale = newVal)
+                                .controller(opt -> FloatSliderControllerBuilder.create(opt)
+                                        .range(0.1F, 1F)
+                                        .step(0.1F))
+                                .build())
+
                         .build())
         )).generateScreen(parent);
     }

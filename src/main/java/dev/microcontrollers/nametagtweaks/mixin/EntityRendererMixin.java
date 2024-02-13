@@ -24,6 +24,17 @@ public class EntityRendererMixin<T extends Entity> {
             ci.cancel();
     }
 
+    @Inject(method = "renderLabelIfPresent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;draw(Lnet/minecraft/text/Text;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)I", shift = At.Shift.BEFORE, ordinal = 0))
+    public void nametagScale(T entity, Text text, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+        float scale = NametagTweaksConfig.INSTANCE.getConfig().nametagScale;
+        matrices.scale(scale, scale, scale);
+    }
+
+    @ModifyArg(method = "renderLabelIfPresent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;draw(Lnet/minecraft/text/Text;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)I"), index = 2)
+    public float changeNametagHeight(float y) {
+        return y - NametagTweaksConfig.INSTANCE.getConfig().nametagOffset;
+    }
+
     @ModifyArg(method = "renderLabelIfPresent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/font/TextRenderer;draw(Lnet/minecraft/text/Text;FFIZLorg/joml/Matrix4f;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/font/TextRenderer$TextLayerType;II)I"), index = 4)
     public boolean addNametagShadow(boolean shadow) {
         return NametagTweaksConfig.INSTANCE.getConfig().nametagTextShadow;
