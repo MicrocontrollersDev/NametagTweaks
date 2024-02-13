@@ -18,7 +18,7 @@ import net.minecraft.text.Text;
 import java.awt.*;
 
 public class NametagTweaksConfig {
-    public static final ConfigInstance<NametagTweaksConfig> INSTANCE = GsonConfigInstance.createBuilder(NametagTweaksConfig.class)
+    public static final ConfigInstance<NametagTweaksConfig> CONFIG = GsonConfigInstance.createBuilder(NametagTweaksConfig.class)
             .setPath(FabricLoader.getInstance().getConfigDir().resolve("nametagtweaks.json"))
             .build();
 
@@ -31,8 +31,10 @@ public class NametagTweaksConfig {
     @ConfigEntry public Color nametagColor = new Color(0, 0, 0, 63);
     @ConfigEntry public boolean nametagTextShadow = false;
     @ConfigEntry public float nametagScale = 1F;
+
+    @SuppressWarnings("deprecation")
     public static Screen configScreen(Screen parent) {
-        return YetAnotherConfigLib.create(INSTANCE, ((defaults, config, builder) -> builder
+        return YetAnotherConfigLib.create(CONFIG, ((defaults, config, builder) -> builder
                 .title(Text.literal("Nametag Tweaks"))
                 .category(ConfigCategory.createBuilder()
                         .name(Text.literal("Nametag Tweaks"))
@@ -98,4 +100,5 @@ public class NametagTweaksConfig {
                         .build())
         )).generateScreen(parent);
     }
+
 }
